@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../widgets/social_button.dart';
 
 class SignupPage extends StatefulWidget {
@@ -15,49 +17,85 @@ class _SignupPageState extends State<SignupPage> {
   final _confirmPassController = TextEditingController();
   bool _isPasswordVisible = false;
 
-  void _signUpManager(){
+  Future<void> _handleSignup() async {
     String email = _emailController.text.trim();
-    String password = _passController.text;
-    String confirmPass = _confirmPassController.text;
+    String password = _passController.text.trim();
+    String confirmPassword = _confirmPassController.text.trim();
 
-    if(email.isEmpty || password.isEmpty || confirmPass.isEmpty){
-      _errorManager("Please fill in all fields");
+    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+      _showError("Please fill in all fields");
       return;
     }
 
-    if(password.length < 8){
-      _errorManager("Password must be at least 8 characters long");
+    if(!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+      _showError("Please enter a valid email address");
       return;
     }
 
-    if (password != confirmPass) {
-      _errorManager("Passwords do not match");
+    if(password.length < 8) {
+      _showError("Password must be at least 8 characters long");
       return;
     }
 
-    print("All checks passed! Creating account for $email...");
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Processing Signup..."), backgroundColor: Colors.green),
-    );
+    if (password != confirmPassword) {
+      _showError("Passwords do not match");
+      return;
+    }
     
-    // TODO:
+    try {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
+
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      Navigator.of(context).pop();
+
+      print("User Created: $email");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Account Created! Please Sign In."), backgroundColor: Colors.green),
+      );
+      
+      Navigator.pop(context); 
+
+    } on FirebaseAuthException catch (e) {
+      // Hide loading circle
+      Navigator.of(context).pop();
+
+      String message = "An error occurred";
+      if (e.code == 'weak-password') {
+        message = 'The password provided is too weak.';
+      } else if (e.code == 'email-already-in-use') {
+        message = 'The account already exists for that email.';
+      } else if (e.code == 'invalid-email') {
+        message = 'The email address is not valid.';
+      }
+      _showError(message);
+    } catch (e) {
+      Navigator.of(context).pop();
+      _showError("Error: ${e.toString()}");
+    }
   }
 
-  void _errorManager(String message){
+  void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(message), backgroundColor: Colors.red,)
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
   }
+
   @override
   Widget build(BuildContext context) {
-    const Color brandGreen = Color(0xFF0EB052);
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.grey),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -85,7 +123,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
 
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
@@ -167,9 +205,8 @@ class _SignupPageState extends State<SignupPage> {
                       child: SizedBox(
                         width: 150, 
                         child: ElevatedButton(
-                          onPressed: () {
-                            print("Login Clicked: ${_emailController.text}");
-                          },
+                          onPressed: _handleSignup,
+                          
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF00C853),
                             foregroundColor: Colors.white,
@@ -177,7 +214,7 @@ class _SignupPageState extends State<SignupPage> {
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                             elevation: 0,
                           ),
-                          child: const Text("Sign in", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          child: const Text("Sign up", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                         ),
                       ),
                     ),
@@ -219,7 +256,7 @@ class _SignupPageState extends State<SignupPage> {
 
               SocialButton(
                 text: "Continue with Google",
-                svgPath: '../assets/icons/google_logo.svg',
+                svgPath: 'assets/icons/google_logo.svg',  
                 onPressed: () {},
               ),
               const SizedBox(height: 16),

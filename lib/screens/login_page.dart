@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/social_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'home_page.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,16 +18,65 @@ class _LoginPageState extends State<LoginPage> {
   final _passController = TextEditingController();
   bool _isPasswordVisible = false;
 
+  Future<void> _handleLogin() async {
+    String email = _emailController.text.trim();
+    String password = _passController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill in all fields"), backgroundColor: Colors.red),
+      );
+      return;
+    }
+
+    try {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
+
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      Navigator.of(context).pop();
+
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+          (route) => false,
+        );
+      }
+
+    } on FirebaseAuthException catch (e) {
+      Navigator.of(context).pop();
+      String message = "Login failed";
+      if (e.code == 'user-not-found') {
+        message = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        message = 'Wrong password provided.';
+      } else if (e.code == 'invalid-credential') {
+        // Newer Firebase versions consolidate errors into this generic one for security
+        message = 'Invalid email or password.';
+      }
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message), backgroundColor: Colors.red),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    const Color brandGreen = Color(0xFF0EB052);
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.grey),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -51,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
 
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
@@ -120,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                         width: 150, 
                         child: ElevatedButton(
                           onPressed: () {
-                            print("Login Clicked: ${_emailController.text}");
+                            _handleLogin();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF00C853),
@@ -171,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
 
               SocialButton(
                 text: "Continue with Google",
-                svgPath: '../assets/icons/google_logo.svg',
+                svgPath: 'assets/icons/google_logo.svg',
                 onPressed: () {},
               ),
               const SizedBox(height: 16),
