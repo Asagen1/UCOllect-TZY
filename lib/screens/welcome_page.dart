@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'login_page.dart';
+import 'signUp_page.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -51,14 +53,14 @@ class WelcomePage extends StatelessWidget {
                       fontWeight: FontWeight.w900,
                       color: Colors.white,
                       height: 1.0,
+                      letterSpacing: 1.1,
                     ),
                   ),
-                  const SizedBox(height: 8),
                   const Text(
                     'Your digital mantika collector',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 22,
                       fontWeight: FontWeight.w500,
                       fontStyle: FontStyle.italic,
                       color: Colors.white,
@@ -69,6 +71,10 @@ class WelcomePage extends StatelessWidget {
                   
                   ElevatedButton(
                     onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SignupPage()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,

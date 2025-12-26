@@ -2,18 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/social_button.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
+  final _confirmPassController = TextEditingController();
   bool _isPasswordVisible = false;
 
+  void _signUpManager(){
+    String email = _emailController.text.trim();
+    String password = _passController.text;
+    String confirmPass = _confirmPassController.text;
+
+    if(email.isEmpty || password.isEmpty || confirmPass.isEmpty){
+      _errorManager("Please fill in all fields");
+      return;
+    }
+
+    if(password.length < 8){
+      _errorManager("Password must be at least 8 characters long");
+      return;
+    }
+
+    if (password != confirmPass) {
+      _errorManager("Passwords do not match");
+      return;
+    }
+
+    print("All checks passed! Creating account for $email...");
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Processing Signup..."), backgroundColor: Colors.green),
+    );
+    
+    // TODO:
+  }
+
+  void _errorManager(String message){
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(message), backgroundColor: Colors.red,)
+    );
+  }
   @override
   Widget build(BuildContext context) {
     const Color brandGreen = Color(0xFF0EB052);
@@ -65,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     const Center(
                       child: Text(
-                        "Welcome Back",
+                        "Let's Get Started",
                         style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -88,6 +122,20 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 8),
                     TextField(
                       controller: _passController,  
+                      obscureText: !_isPasswordVisible,
+                      decoration: InputDecoration(
+                        hintText: "• • • • • • • •",
+                        hintStyle: TextStyle(color: Colors.grey[400]),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    const Text("Re-enter Password", style: TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: _confirmPassController,  
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
                         hintText: "• • • • • • • •",
