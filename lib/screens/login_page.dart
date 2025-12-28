@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/social_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'home_page.dart';
+import 'dashboard/home_page.dart';
 
 
 class LoginPage extends StatefulWidget {

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../widgets/social_button.dart';
+import '/widgets/social_button.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -49,10 +50,20 @@ class _SignupPageState extends State<SignupPage> {
         builder: (context) => const Center(child: CircularProgressIndicator()),
       );
 
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      if (userCredential.user != null) {
+        await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+          'total_earnings': 0.0, // Start with 0
+          'total_liters': 0.0,
+          'co2_saved': 0.0,
+          'displayName': email.split('@')[0],
+          'created_at': FieldValue.serverTimestamp(),
+        });
+      }
 
       Navigator.of(context).pop();
 
