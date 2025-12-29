@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../screens/dashboard/transactionDetails_page.dart';
+
 class RecentActivityList extends StatelessWidget {
   final String userId;
   final int limit;
@@ -65,37 +67,54 @@ class RecentActivityList extends StatelessWidget {
                 ? "${timestamp.toDate().month}/${timestamp.toDate().day}" 
                 : "Recent";
 
-            return Container(
-              margin: const EdgeInsets.only(bottom: 12), 
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.grey.shade100),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))
-                ],
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(color: Color(0xFFE8F5E9), shape: BoxShape.circle),
-                    child: const Icon(Icons.check, color: Color(0xFF0EB052), size: 20),
+              return GestureDetector(
+              // ADDED THIS ONTAP
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TransactionDetailsPage(
+                      transactionId: doc.id, // Passes the ID
+                      data: data,           // Passes the rest of the info
+                    ),
                   ),
-                  const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text("Oil Collected", style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text("$liters L • $dateStr", style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                    ],
-                  ),
-                  const Spacer(),
-                  Text("+P${amount.toStringAsFixed(0)}", 
-                    style: const TextStyle(color: Color(0xFF0EB052), fontWeight: FontWeight.bold)
-                  ),
-                ],
+                );
+              },
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey.shade100),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(color: Color(0xFFE8F5E9), shape: BoxShape.circle),
+                      child: const Icon(Icons.check, color: Color(0xFF0EB052), size: 20),
+                    ),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("Oil Collected", style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text("$liters L • $dateStr", style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                      ],
+                    ),
+                    const Spacer(),
+                    Text("+P${amount.toStringAsFixed(0)}", 
+                      style: const TextStyle(color: Color(0xFF0EB052), fontWeight: FontWeight.bold)
+                    ),
+                    const SizedBox(width: 8),
+                    // Added a small arrow to hint it is clickable
+                    const Icon(Icons.chevron_right, size: 16, color: Colors.grey),
+                  ],
+                ),
               ),
             );
           }).toList(),

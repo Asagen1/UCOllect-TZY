@@ -5,11 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ucollect/screens/dashboard/sell_page.dart'; 
 
 import '../../widgets/recent_activity_list.dart';
-import '../welcome_page.dart'; 
 import 'rate_page.dart';
 import 'cashout_page.dart';
 import 'history_page.dart';
 import 'profile_page.dart';
+import 'station_list_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -73,16 +73,6 @@ class DashboardTab extends StatefulWidget {
 }
 
 class _DashboardTabState extends State<DashboardTab> {
-  void _handleLogout() async {
-    await FirebaseAuth.instance.signOut();
-    if (mounted) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const WelcomePage()),
-        (route) => false,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     const Color brandGreen = Color(0xFF0EB052);
@@ -111,7 +101,7 @@ class _DashboardTabState extends State<DashboardTab> {
           final data = snapshot.data!.data() as Map<String, dynamic>;
           earnings = (data['total_earnings'] ?? 0).toDouble();
           liters = (data['total_liters'] ?? 0).toDouble();
-          co2 = (data['co2-saved'] ?? 0).toDouble();
+          co2 = (data['co2_saved'] ?? 0).toDouble();
           name = data['displayName'] ?? "Ucollector";
         }
 
@@ -153,7 +143,7 @@ class _DashboardTabState extends State<DashboardTab> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.notifications_none, color: brandGreen, size: 28),
-                      onPressed: _handleLogout,
+                      onPressed: () {},
                     ),
                   ],
                 ),
@@ -286,7 +276,12 @@ class _DashboardTabState extends State<DashboardTab> {
                 const SizedBox(height: 12),
 
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(builder: (context) => const StationsListPage()),
+                    );
+                  },
                   style: OutlinedButton.styleFrom(
                     backgroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
