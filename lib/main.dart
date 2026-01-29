@@ -1,8 +1,12 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; 
 import 'firebase_options.dart';
 
 import 'screens/welcome_page.dart';
+import 'screens/login_page.dart';
+import 'screens/dashboard/home_page.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -16,15 +20,26 @@ void main() async {
 class MyApp extends StatelessWidget{
     const MyApp({super.key});
 
+    static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+    static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
+
     @override
     Widget build(BuildContext context) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Ucollect',
+          title: 'MantiCol',
+
+          navigatorObservers: [observer],
+
+          routes: {
+            '/login': (context) => LoginPage(),
+            '/dashboard': (context) => HomePage(),
+          },
           theme: ThemeData(
-            primaryColor: Colors.green,
             useMaterial3: true,
           ),
+
+          
           home: const WelcomePage(),
         );
     }

@@ -16,6 +16,10 @@ class _ProfilePageState extends State<ProfilePage> {
     final shouldLogout = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
         title: const Text("Log Out"),
         content: const Text("Are you sure you want to log out?"),
         actions: [
@@ -42,31 +46,24 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    const Color brandGreen = Color(0xFF0EB052);
+    const Color brandColor = Color(0xFFFC882F);
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text("My Profile", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-      ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance.collection('users').doc(user?.uid).snapshots(),
         builder: (context, snapshot) {
           
-          String displayName = "Ucollector";
+          String displayName = "MantiCollector";
           String email = user?.email ?? "";
           
           if (snapshot.hasData && snapshot.data != null && snapshot.data!.exists) {
             final data = snapshot.data!.data() as Map<String, dynamic>;
-            displayName = data['displayName'] ?? "Ucollector";
+            displayName = data['displayName'] ?? "MantiCollector";
           }
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(30),
             child: Column(
               children: [
                 Center(
@@ -74,10 +71,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       CircleAvatar(
                         radius: 50,
-                        backgroundColor: brandGreen.withOpacity(0.1),
+                        backgroundColor: brandColor.withOpacity(0.1),
                         child: Text(
                           displayName.isNotEmpty ? displayName[0].toUpperCase() : "U",
-                          style: const TextStyle(fontSize: 40, color: brandGreen, fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontSize: 40, color: brandColor, fontWeight: FontWeight.bold),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -88,16 +85,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
 
                 const SizedBox(height: 32),
-                const Divider(),
-                const SizedBox(height: 16),
 
                 _buildProfileOption(icon: Icons.person_outline, title: "Edit Personal Details", onTap: () {}),
                 _buildProfileOption(icon: Icons.notifications_none, title: "Notifications", onTap: () {}),
                 _buildProfileOption(icon: Icons.security, title: "Privacy & Security", onTap: () {}),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
                 const Divider(),
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
 
                 _buildProfileOption(icon: Icons.help_outline, title: "Help & Support", onTap: () {}),
                 

@@ -71,33 +71,32 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    const Color brandColor = Color(0xFFFC882F);
+    const Color brandColorDark = Color(0xFFF17416);
+
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.grey),
-      ),
+      
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center, 
                 children: [
                   SvgPicture.asset(
                     'assets/icons/ucollect_logo.svg',
-                    colorFilter: const ColorFilter.mode(Color(0xFF07D55D), BlendMode.srcIn),
+                    colorFilter: const ColorFilter.mode(brandColor, BlendMode.srcIn),
                     height: 50, 
                   ),
                   const SizedBox(width: 12),
                   const Text(
-                    'Ucollect',
+                    'MantiCol',
                     style: TextStyle(
-                      color: Color(0xFF07D55D),
+                      color: brandColor,
                       fontWeight: FontWeight.w700,
                       fontSize: 30,
                     ),
@@ -158,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: 24,
                           child: Checkbox(
                             value: _isPasswordVisible,
-                            activeColor: const Color(0xFF00C853),
+                            activeColor: brandColorDark,
                             onChanged: (value) => setState(() => _isPasswordVisible = value!),
                           ),
                         ),
@@ -176,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                             _handleLogin();
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF00C853),
+                            backgroundColor: brandColorDark,
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

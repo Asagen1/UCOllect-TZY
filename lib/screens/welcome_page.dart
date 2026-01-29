@@ -20,8 +20,8 @@ class WelcomePage extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFF00FF6A),
-                  Color(0xFF0EB052),
+                  Color(0xFFFC882F),
+                  Color(0xFFF17416),
                 ],
               ),
             ),
@@ -78,7 +78,7 @@ class WelcomePage extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      foregroundColor: const Color(0xFF00E676),
+                      foregroundColor: const Color(0xFFFC882F),
                       padding: const EdgeInsets.symmetric(vertical: 18),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),

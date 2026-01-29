@@ -11,13 +11,6 @@ class HistoryPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text("Transaction History", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-      ),
       body: user == null
           ? const Center(child: Text("Please log in"))
           : SingleChildScrollView(
@@ -25,6 +18,7 @@ class HistoryPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: 20),
                    Text(
                     "All Transactions",
                     style: TextStyle(color: Colors.grey[600], fontSize: 14, fontWeight: FontWeight.w500),

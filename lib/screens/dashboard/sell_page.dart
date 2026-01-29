@@ -95,7 +95,7 @@ class _SellPageState extends State<SellPage> {
       stream: FirebaseFirestore.instance.collection('settings').doc('global_config').snapshots(),
       builder: (context, snapshot) {
 
-        double livePrice = 12.50;
+        double livePrice = 12.50; //if no data, use default
 
         if (snapshot.hasData && snapshot.data != null && snapshot.data!.exists) {
           final data = snapshot.data!.data() as Map<String, dynamic>;
@@ -113,7 +113,6 @@ class _SellPageState extends State<SellPage> {
               icon: const Icon(Icons.arrow_back, color: Colors.black),
               onPressed: () => Navigator.pop(context),
             ),
-            title: const Text("Sell Page", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
             centerTitle: true,
           ),
           

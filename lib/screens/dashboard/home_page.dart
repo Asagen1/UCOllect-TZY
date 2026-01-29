@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const Color brandGreen = Color(0xFF0EB052);
+    const Color brandGreen = Color(0xFFFC882F);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -75,8 +75,8 @@ class DashboardTab extends StatefulWidget {
 class _DashboardTabState extends State<DashboardTab> {
   @override
   Widget build(BuildContext context) {
-    const Color brandGreen = Color(0xFF0EB052);
-    const Color lightGreenBg = Color(0xFFE8F5E9);
+    const Color brandColor = Color(0xFFFC882F);
+    const Color lightOrangeBg = Color.fromARGB(255, 252, 246, 242);
     const Color lightYellowBg = Color(0xFFFFFDE7);
     const Color textDark = Color(0xFF1F2937);
 
@@ -95,14 +95,14 @@ class _DashboardTabState extends State<DashboardTab> {
         double earnings = 0.0;
         double liters = 0.0;
         double co2 = 0.0;
-        String name = "Ucollector";
+        String name = "MantiCollector";
 
         if (snapshot.hasData && snapshot.data != null && snapshot.data!.exists) {
           final data = snapshot.data!.data() as Map<String, dynamic>;
           earnings = (data['total_earnings'] ?? 0).toDouble();
           liters = (data['total_liters'] ?? 0).toDouble();
           co2 = (data['co2_saved'] ?? 0).toDouble();
-          name = data['displayName'] ?? "Ucollector";
+          name = data['displayName'] ?? "MantiCollector";
         }
 
         return SafeArea(
@@ -119,16 +119,16 @@ class _DashboardTabState extends State<DashboardTab> {
                         SvgPicture.asset(
                           'assets/icons/ucollect_logo.svg',
                           height: 32,
-                          colorFilter: const ColorFilter.mode(brandGreen, BlendMode.srcIn),
+                          colorFilter: const ColorFilter.mode(brandColor, BlendMode.srcIn),
                         ),
                         const SizedBox(width: 8),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              "Ucollect",
+                              "MantiCol",
                               style: TextStyle(
-                                color: brandGreen,
+                                color: brandColor,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -142,7 +142,7 @@ class _DashboardTabState extends State<DashboardTab> {
                       ],
                     ),
                     IconButton(
-                      icon: const Icon(Icons.notifications_none, color: brandGreen, size: 28),
+                      icon: const Icon(Icons.notifications_none, color: brandColor, size: 28),
                       onPressed: () {},
                     ),
                   ],
@@ -152,10 +152,10 @@ class _DashboardTabState extends State<DashboardTab> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: brandGreen,
+                    color: brandColor,
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
-                      BoxShadow(color: brandGreen.withOpacity(0.3), blurRadius: 10, offset: const Offset(0, 5)),
+                      BoxShadow(color: brandColor.withOpacity(0.3), blurRadius: 10, offset: const Offset(0, 5)),
                     ],
                   ),
                   child: Column(
@@ -172,12 +172,12 @@ class _DashboardTabState extends State<DashboardTab> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               decoration: BoxDecoration(
-                                color: lightGreenBg,
+                                color: lightOrangeBg,
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: Column(
                                 children: [
-                                  const Icon(Icons.water_drop, color: Color(0xFF00C853), size: 28),
+                                  const Icon(Icons.water_drop, color: Color(0xFFFC882F), size: 28),
                                   const SizedBox(height: 8),
                                   Text(
                                     liters.toStringAsFixed(1),
@@ -246,7 +246,7 @@ class _DashboardTabState extends State<DashboardTab> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: brandGreen,
+                    backgroundColor: brandColor,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

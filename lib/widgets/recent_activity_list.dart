@@ -96,7 +96,7 @@ class RecentActivityList extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: const BoxDecoration(color: Color(0xFFE8F5E9), shape: BoxShape.circle),
-                      child: const Icon(Icons.check, color: Color(0xFF0EB052), size: 20),
+                      child: const Icon(Icons.check, color: Color(0xFFF17416), size: 20),
                     ),
                     const SizedBox(width: 16),
                     Column(
@@ -108,7 +108,7 @@ class RecentActivityList extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text("+P${amount.toStringAsFixed(0)}", 
-                      style: const TextStyle(color: Color(0xFF0EB052), fontWeight: FontWeight.bold)
+                      style: const TextStyle(color: Color(0xFFF17416), fontWeight: FontWeight.bold)
                     ),
                     const SizedBox(width: 8),
                     // Added a small arrow to hint it is clickable

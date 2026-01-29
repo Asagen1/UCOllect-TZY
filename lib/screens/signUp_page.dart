@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/widgets/social_button.dart';
+import 'dashboard/home_page.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -25,7 +26,7 @@ class _SignupPageState extends State<SignupPage> {
 
     if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
       _showError("Please fill in all fields");
-      return;
+      return; 
     }
 
     if(!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
@@ -68,11 +69,14 @@ class _SignupPageState extends State<SignupPage> {
       Navigator.of(context).pop();
 
       print("User Created: $email");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Account Created! Please Sign In."), backgroundColor: Colors.green),
-      );
       
-      Navigator.pop(context); 
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+          (route) => false,
+        );
+      }
 
     } on FirebaseAuthException catch (e) {
       // Hide loading circle
@@ -101,33 +105,31 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    const Color brandColor = Color(0xFFFC882F);
+    const Color brandColorDark = Color(0xFFF17416);
+
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.grey),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center, 
                 children: [
                   SvgPicture.asset(
                     'assets/icons/ucollect_logo.svg',
-                    colorFilter: const ColorFilter.mode(Color(0xFF07D55D), BlendMode.srcIn),
+                    colorFilter: const ColorFilter.mode(brandColor, BlendMode.srcIn),
                     height: 50, 
                   ),
                   const SizedBox(width: 12),
                   const Text(
-                    'Ucollect',
+                    'MantiCol',
                     style: TextStyle(
-                      color: Color(0xFF07D55D),
+                      color: brandColor,
                       fontWeight: FontWeight.w700,
                       fontSize: 30,
                     ),
@@ -202,7 +204,7 @@ class _SignupPageState extends State<SignupPage> {
                           width: 24,
                           child: Checkbox(
                             value: _isPasswordVisible,
-                            activeColor: const Color(0xFF00C853),
+                            activeColor: brandColorDark,
                             onChanged: (value) => setState(() => _isPasswordVisible = value!),
                           ),
                         ),
@@ -219,7 +221,7 @@ class _SignupPageState extends State<SignupPage> {
                           onPressed: _handleSignup,
                           
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF00C853),
+                            backgroundColor: brandColorDark,
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
