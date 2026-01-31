@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart'; 
 import 'firebase_options.dart';
 
@@ -9,6 +10,11 @@ import 'screens/dashboard/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle( 
+    statusBarColor: Colors.transparent, 
+    statusBarIconBrightness: Brightness.light, 
+  ));
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -35,6 +41,7 @@ class MyApp extends StatelessWidget{
             '/login': (context) => LoginPage(),
             '/dashboard': (context) => HomePage(),
           },
+
           theme: ThemeData(
             useMaterial3: true,
           ),

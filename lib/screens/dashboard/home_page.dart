@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart'; 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ucollect/screens/dashboard/sell_page.dart'; 
 
 import '../../widgets/recent_activity_list.dart';
+import '../../widgets/custom_appBar.dart';
 import 'rate_page.dart';
 import 'cashout_page.dart';
 import 'history_page.dart';
@@ -105,49 +105,17 @@ class _DashboardTabState extends State<DashboardTab> {
           name = data['displayName'] ?? "MantiCollector";
         }
 
-        return SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: const CustomAppBar(),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          'assets/icons/ucollect_logo.svg',
-                          height: 32,
-                          colorFilter: const ColorFilter.mode(brandColor, BlendMode.srcIn),
-                        ),
-                        const SizedBox(width: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "MantiCol",
-                              style: TextStyle(
-                                color: brandColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                            Text(
-                              "Welcome back, $name!",
-                              style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.notifications_none, color: brandColor, size: 28),
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
+                
                 const SizedBox(height: 24),
+                
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),

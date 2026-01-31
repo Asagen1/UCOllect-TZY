@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ucollect/screens/name_page.dart';
 
 import '/widgets/social_button.dart';
 import 'dashboard/home_page.dart';
@@ -73,7 +74,7 @@ class _SignupPageState extends State<SignupPage> {
       if (mounted) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => const NameSetupPage()),
           (route) => false,
         );
       }

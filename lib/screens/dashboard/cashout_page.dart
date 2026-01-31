@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ucollect/widgets/custom_appbar.dart';
 
 // ai cash out page
 
@@ -20,8 +21,7 @@ class _CashOutPageState extends State<CashOutPage> {
   Future<void> _submitRequest() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isLoading = true);
-    
-    // Safety: Hide keyboard
+
     FocusScope.of(context).unfocus();
 
     final user = FirebaseAuth.instance.currentUser;
@@ -31,7 +31,7 @@ class _CashOutPageState extends State<CashOutPage> {
 
     try {
       await FirebaseFirestore.instance.runTransaction((transaction) async {
-        // 1. Get User Data
+        // Fetch User Data
         DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
         DocumentSnapshot userSnapshot = await transaction.get(userRef);
         
@@ -39,16 +39,16 @@ class _CashOutPageState extends State<CashOutPage> {
 
         double currentBalance = (userSnapshot.get('total_earnings') ?? 0).toDouble();
 
-        // 2. Check Balance
+        // Check Balance
         if (currentBalance < amountToWithdraw) {
-          throw Exception("Insufficient Balance"); // This triggers the snackbar below
+          throw Exception("Insufficient Balance");
         }
 
-        // 3. Deduct Money
+        // Deduct Money
         double newBalance = currentBalance - amountToWithdraw;
         transaction.update(userRef, {'total_earnings': newBalance});
 
-        // 4. Create Withdrawal Ticket
+        // Create Withdrawal Ticket
         DocumentReference newRequestRef = FirebaseFirestore.instance.collection('withdrawals').doc();
         transaction.set(newRequestRef, {
           'userId': user.uid,
@@ -90,6 +90,7 @@ class _CashOutPageState extends State<CashOutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBar(),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),

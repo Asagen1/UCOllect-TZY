@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ucollect/widgets/custom_appbar.dart';
 import '../../widgets/recent_activity_list.dart';
 
 class HistoryPage extends StatelessWidget {
@@ -10,6 +11,7 @@ class HistoryPage extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
+      appBar: const CustomAppBar(),
       backgroundColor: Colors.white,
       body: user == null
           ? const Center(child: Text("Please log in"))

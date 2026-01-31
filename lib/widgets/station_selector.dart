@@ -8,7 +8,6 @@ class StationPickerSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      // Give it a rounded top look
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -16,7 +15,6 @@ class StationPickerSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Handle bar
           Container(
             width: double.infinity,
             height: 4,
@@ -43,7 +41,7 @@ class StationPickerSheet extends StatelessWidget {
                 }
 
                 return ListView.builder(
-                  shrinkWrap: true, // Important for bottom sheets
+                  shrinkWrap: true, 
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     final doc = snapshot.data!.docs[index];
@@ -57,7 +55,6 @@ class StationPickerSheet extends StatelessWidget {
                       title: Text(data['name'] ?? "Unknown Station", style: const TextStyle(fontWeight: FontWeight.bold)),
                       subtitle: Text(data['address'] ?? "No address"),
                       onTap: () {
-                        // RETURN THE SELECTED DATA AND ID BACK TO SELL PAGE
                         Navigator.pop(context, {
                           'id': doc.id,
                           'name': data['name'],

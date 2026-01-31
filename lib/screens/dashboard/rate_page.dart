@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ucollect/widgets/custom_appBar.dart';
 
 // ai rate page
 
@@ -19,6 +20,7 @@ class _RatePageState extends State<RatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBar(),
       backgroundColor: Colors.white,
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance.collection('settings').doc('global_config').snapshots(),

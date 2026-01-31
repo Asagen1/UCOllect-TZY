@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ucollect/widgets/custom_appBar.dart';
 import '../welcome_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -49,6 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
     const Color brandColor = Color(0xFFFC882F);
 
     return Scaffold(
+      appBar: const CustomAppBar(),
       backgroundColor: Colors.white,
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance.collection('users').doc(user?.uid).snapshots(),
