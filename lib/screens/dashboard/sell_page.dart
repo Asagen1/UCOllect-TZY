@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // Make sure this import points to where you actually saved the widget
 import '../../widgets/station_selector.dart'; 
+import 'survey_page.dart';
 
 class SellPage extends StatefulWidget {
   const SellPage({super.key});
@@ -74,10 +75,17 @@ class _SellPageState extends State<SellPage> {
       await batch.commit();
 
       if (mounted) {
-        Navigator.pop(context); 
+        // Move to survey
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const SurveyPage()),
+        );
+
+        // Success Message
         ScaffoldMessenger.of(context).showSnackBar(
            const SnackBar(content: Text("Pickup Confirmed! Dashboard updated."), backgroundColor: Colors.green),
         );
+        
       }
 
     } catch (e) {
